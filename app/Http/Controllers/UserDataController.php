@@ -23,7 +23,7 @@ class UserDataController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard.index');
         }
 
         return back()->withErrors([
@@ -47,7 +47,7 @@ class UserDataController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.index');
     }
 
     public function logout(Request $request)

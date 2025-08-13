@@ -51,11 +51,54 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="text-center mb-4">ダッシュボード</h1>
-                    <div class="alert alert-info text-center">
-                        <h4>ようこそ、{{ Auth::user()->name }}さん！</h4>
-                        <p>ガントチャートアプリのダッシュボードです。</p>
-                        <p>このページは現在スタブ実装です。</p>
+                    <h1 class="text-center mb-4">プロジェクト管理</h1>
+                    
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <!-- プロジェクト作成フォーム -->
+                    <div id="create" class="p-4 mb-4" style="background-color: #7fffd4; border-radius: 10px;">
+                        <h3>プロジェクト作成</h3>
+                        <form method="POST" action="{{ route('dashboard.create_project') }}" class="d-flex align-items-center">
+                            @csrf
+                            <div class="me-3">
+                                <label for="project_name" class="form-label">プロジェクト名入力</label>
+                                <input type="text" class="form-control" id="project_name" name="project_name" required>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary rounded-button">プロジェクト作成</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- プロジェクト一覧 -->
+                    <div id="list" class="p-4" style="background-color: skyblue; border-radius: 10px;">
+                        <h3>プロジェクト一覧</h3>
+                        @if($projects->count() > 0)
+                            @foreach($projects as $project)
+                                <div class="d-flex align-items-center justify-content-between mb-3 p-3 bg-white rounded">
+                                    <span class="fw-bold">{{ $project->project_name }}</span>
+                                    <div>
+                                        <form method="POST" action="{{ route('project.index') }}" style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                            <button type="submit" class="btn btn-primary rounded-button me-2">プロジェクトを開く</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('dashboard.delete_project', $project->id) }}" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger rounded-button" onclick="return confirm('本当に削除しますか？')">プロジェクトを削除</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-center">プロジェクトがありません。</p>
+                        @endif
                     </div>
                 </div>
             </div>
