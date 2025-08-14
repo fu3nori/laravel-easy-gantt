@@ -31,3 +31,4 @@ class Task extends Model
         return $this->belongsTo(Project::class, 'projects_id');
     }
 }
+

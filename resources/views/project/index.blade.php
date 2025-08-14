@@ -47,7 +47,8 @@
         .gantt-container {
             position: relative;
             height: 400px;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: white;
@@ -285,6 +286,10 @@
                 return;
             }
             
+            // タスク数に応じてキャンバスの高さを動的に調整
+            const requiredHeight = headerHeight + (tasks.length * (barHeight + barSpacing)) + barSpacing;
+            canvas.height = Math.max(400, requiredHeight);
+            
             drawGantt();
         }
 
@@ -412,7 +417,7 @@
         // 日付をX座標に変換
         function getDateX(date) {
             const diffTime = date.getTime() - currentDate.getTime();
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             return leftMargin + (diffDays * 50);
         }
 
