@@ -82,12 +82,7 @@
                                 <div class="d-flex align-items-center justify-content-between mb-3 p-3 bg-white rounded">
                                     <span class="fw-bold">{{ $project->project_name }}</span>
                                     <div>
-                                        <form method="POST" action="{{ route('project.index') }}" style="display: inline;">
-                                            @csrf
-                                            <input type="hidden" name="project_id" value="{{ $project->id }}">
-                                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                                            <button type="submit" class="btn btn-primary rounded-button me-2">プロジェクトを開く</button>
-                                        </form>
+                                        <a href="{{ route('project.index', $project->id) }}" class="btn btn-primary rounded-button me-2">プロジェクトを開く</a>
                                         <form method="POST" action="{{ route('dashboard.delete_project', $project->id) }}" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
